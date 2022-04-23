@@ -5,4 +5,6 @@ module com.example.javafxmysqlproject {
 
     opens com.example.javafxmysqlproject to javafx.fxml;
     exports com.example.javafxmysqlproject;
+    exports com.example.javafxmysqlproject.controllers;
+    opens com.example.javafxmysqlproject.controllers to javafx.fxml;
 }

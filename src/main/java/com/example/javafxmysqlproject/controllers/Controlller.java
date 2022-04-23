@@ -1,9 +1,9 @@
-package com.example.javafxmysqlproject;
+package com.example.javafxmysqlproject.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class Controlller {
     @FXML
     private Label welcomeText;
 

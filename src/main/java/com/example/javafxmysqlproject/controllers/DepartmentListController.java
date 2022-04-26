@@ -1,6 +1,7 @@
 package com.example.javafxmysqlproject.controllers;
 
 import com.example.javafxmysqlproject.Main;
+import com.example.javafxmysqlproject.gui.listeners.DataChangeListener;
 import com.example.javafxmysqlproject.gui.util.Alerts;
 import com.example.javafxmysqlproject.gui.util.Utils;
 import com.example.javafxmysqlproject.model.entities.Department;
@@ -26,7 +27,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChangeListener {
 
     private DepartmentService service;
 
@@ -85,6 +86,7 @@ public class DepartmentListController implements Initializable {
             DepartmentFormController controller = loader.getController();
             controller.setEntity(department);
             controller.updateFormData();
+            controller.subscribeDataChangeListener(this);
             controller.setService(new DepartmentService());
 
             Stage dialogStage = new Stage();
@@ -101,4 +103,8 @@ public class DepartmentListController implements Initializable {
     }
 
 
+    @Override
+    public void onDataChanged() {
+        updateTableView();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.javafxmysqlproject.controllers;
 
 import com.example.javafxmysqlproject.db.DBException;
+import com.example.javafxmysqlproject.gui.listeners.DataChangeListener;
 import com.example.javafxmysqlproject.gui.util.Alerts;
 import com.example.javafxmysqlproject.gui.util.Constraints;
 import com.example.javafxmysqlproject.gui.util.Utils;
@@ -15,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
@@ -22,6 +25,7 @@ public class DepartmentFormController implements Initializable {
 
     private Department entity;
     private DepartmentService service;
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     public void setEntity(Department entity) {
         this.entity = entity;
@@ -29,6 +33,10 @@ public class DepartmentFormController implements Initializable {
 
     public void setService(DepartmentService service) {
         this.service = service;
+    }
+
+    public void subscribeDataChangeListener(DataChangeListener listener) {
+        dataChangeListeners.add(listener);
     }
 
     @FXML
@@ -57,10 +65,17 @@ public class DepartmentFormController implements Initializable {
         try {
             entity = getFormData();
             service.saveOrUpdate(entity);
+            notifyDataChangeListeners();
             Utils.currentStage(event).close();
         } catch (DBException e) {
             Alerts.showAlert("Error saving object", null, e.getMessage(), Alert.AlertType.ERROR);
 
+        }
+    }
+
+    private void notifyDataChangeListeners() {
+        for (DataChangeListener listener : dataChangeListeners) {
+            listener.onDataChanged();
         }
     }
 

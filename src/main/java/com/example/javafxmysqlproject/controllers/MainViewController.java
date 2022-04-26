@@ -52,7 +52,7 @@ public class MainViewController implements Initializable {
 
     }
 
-    private synchronized  <T> void loadView(String path, Consumer<T> initializeAction) {
+    private synchronized <T> void loadView(String path, Consumer<T> initializeAction) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
             VBox newVBox = loader.load();

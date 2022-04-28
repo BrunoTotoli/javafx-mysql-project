@@ -3,6 +3,7 @@ package com.example.javafxmysqlproject.controllers;
 import com.example.javafxmysqlproject.Main;
 import com.example.javafxmysqlproject.gui.util.Alerts;
 import com.example.javafxmysqlproject.model.services.DepartmentService;
+import com.example.javafxmysqlproject.model.services.SellerService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,7 +32,10 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemSellerAction() {
-        System.out.println("onMenuItemSellerAction");
+        loadView("/fxml/SellerList.fxml",(SellerListController controller) -> {
+            controller.setSellerService(new SellerService());
+            controller.updateTableView();
+        });
     }
 
     @FXML

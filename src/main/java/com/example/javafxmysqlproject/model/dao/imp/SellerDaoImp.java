@@ -191,7 +191,7 @@ public class SellerDaoImp implements GenericDao<Seller> {
         return new Seller(rs.getInt("Id"),
                 rs.getString("Name"),
                 rs.getString("Email"),
-                rs.getDate("BirthDate"),
+                new java.util.Date(rs.getTimestamp("BirthDate").getTime()),
                 rs.getDouble("BaseSalary"),
                 department);
     }

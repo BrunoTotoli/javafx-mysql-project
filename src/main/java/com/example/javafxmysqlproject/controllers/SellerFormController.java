@@ -11,12 +11,11 @@ import com.example.javafxmysqlproject.model.services.SellerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class SellerFormController implements Initializable {
@@ -45,7 +44,25 @@ public class SellerFormController implements Initializable {
     private TextField textFieldName;
 
     @FXML
-    private Label labelError;
+    private TextField textFieldEmail;
+
+    @FXML
+    private DatePicker textFieldBirthDate;
+
+    @FXML
+    private TextField textFieldBaseSalary;
+
+    @FXML
+    private Label labelErrorName;
+
+    @FXML
+    private Label labelErrorEmail;
+
+    @FXML
+    private Label labelErrorBirthDate;
+
+    @FXML
+    private Label labelErrorBaseSalary;
 
     @FXML
     private Button buttonSave;
@@ -106,7 +123,10 @@ public class SellerFormController implements Initializable {
 
     private void initializeNodes() {
         Constraints.setTextFieldInteger(textFieldId);
-        Constraints.setTextFieldMaxLength(textFieldName, 30);
+        Constraints.setTextFieldMaxLength(textFieldName, 70);
+        Constraints.setTextFieldDouble(textFieldBaseSalary);
+        Constraints.setTextFieldMaxLength(textFieldEmail, 70);
+        Utils.formatDatePicker(textFieldBirthDate, "dd/MM/yyyy");
     }
 
     public void updateFormData() {
@@ -115,13 +135,21 @@ public class SellerFormController implements Initializable {
         }
         textFieldId.setText(String.valueOf(entity.getId()));
         textFieldName.setText(entity.getName());
+        textFieldEmail.setText(entity.getEmail());
+        Locale.setDefault(Locale.US);
+        textFieldBaseSalary.setText(String.format("%.2f", entity.getBaseSalary()));
+        if(entity.getBirthDate() != null){
+            textFieldBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()));
+        }
+
+
     }
 
     private void setErrorMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
 
         if (fields.contains("name")) {
-            labelError.setText(errors.get("name"));
+            labelErrorName.setText(errors.get("name"));
         }
     }
 }

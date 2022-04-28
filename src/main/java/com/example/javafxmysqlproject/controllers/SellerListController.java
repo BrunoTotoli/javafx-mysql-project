@@ -6,6 +6,7 @@ import com.example.javafxmysqlproject.gui.listeners.DataChangeListener;
 import com.example.javafxmysqlproject.gui.util.Alerts;
 import com.example.javafxmysqlproject.gui.util.Utils;
 import com.example.javafxmysqlproject.model.entities.Seller;
+import com.example.javafxmysqlproject.model.services.DepartmentService;
 import com.example.javafxmysqlproject.model.services.SellerService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -83,9 +84,9 @@ public class SellerListController implements Initializable, DataChangeListener {
         tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-        Utils.formatTableColumnDate(tableColumnBirthDate,"dd/MM/yyyy");
+        Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
         tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
-        Utils.formatTableColumnDouble(tableColumnBaseSalary,2);
+        Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 
         Stage stage = (Stage) Main.getMainScene().getWindow();
         tableViewSeller.prefHeightProperty().bind(stage.heightProperty());
@@ -111,7 +112,8 @@ public class SellerListController implements Initializable, DataChangeListener {
             controller.setEntity(Seller);
             controller.updateFormData();
             controller.subscribeDataChangeListener(this);
-            controller.setService(new SellerService());
+            controller.setServices(new SellerService(), new DepartmentService());
+            controller.loadAssociatedObjects();
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Enter Seller Data");
@@ -122,6 +124,7 @@ public class SellerListController implements Initializable, DataChangeListener {
             dialogStage.showAndWait();
 
         } catch (IOException e) {
+            e.printStackTrace();
             Alerts.showAlert("IOException", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
         }
     }

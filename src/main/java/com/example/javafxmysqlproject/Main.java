@@ -13,6 +13,7 @@ public class Main extends Application {
 
     private static Scene mainScene;
 
+
     @Override
     public void start(Stage stage) throws IOException {
 
